@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -9,7 +12,7 @@ public class NamesList {
         names = new ArrayList<>();
     }
 
-    public void startUserInterface() {
+    public void startUserInterface() throws FileNotFoundException {
         System.out.println("""
                 Welcome to the NamesList - enterprise edition.
                 ----------------------------------------------
@@ -49,12 +52,12 @@ public class NamesList {
                 Enter each name you want to add to the list. End by entering an empty name.
                 """);
         Scanner sc = new Scanner(System.in);
-        String name = "-nothing yet-";
+        String name = "null";
         while(!name.isBlank() && sc.hasNextLine()) {
             name = sc.nextLine();
             if(!name.isBlank()) {
                 names.add(name);
-                System.out.println(name + " added to the list, enter another, or empty to quit");
+                System.out.println("\u001B[1m" + name + "\u001B[0m added to the list, enter another, or empty to quit");
             }
         }
         System.out.println("Done");
@@ -65,9 +68,15 @@ public class NamesList {
         System.out.println("NOT IMPLEMENTED");
     }
 
-    private void loadListOfNames() {
-        // TODO: Implement load of the names list from a file
-        System.out.println("NOT IMPLEMENTED");
+    private void loadListOfNames() throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("data/names.txt"));
+        String name = "null";
+        while(!name.isBlank() && sc.hasNextLine()) {
+            name = sc.nextLine();
+            names.add(name);
+            System.out.println("\u001B[1m" + name + "\u001B[0m added to the list");
+        }
+        System.out.println("Loaded list of names");
     }
 
     private void displayListOfNames() {
@@ -92,7 +101,7 @@ public class NamesList {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         NamesList app = new NamesList();
         app.startUserInterface();
     }
